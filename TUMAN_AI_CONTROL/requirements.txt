@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg[binary]
+python-dotenv
+python-multipart
+PyJWT
+pwdlib[argon2]
+email-validator
+pytest
+httpx
+aiogram>=3.20,<4.0
+google-genai

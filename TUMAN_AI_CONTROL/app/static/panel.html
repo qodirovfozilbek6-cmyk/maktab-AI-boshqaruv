@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060c">
+<meta name="robots" content="noindex">
+<title>MAKTAB AI CONTROL | Panel</title>
+<link rel="stylesheet" href="/static/css/maktab.css">
+</head>
+<body>
+<div id="boot" class="boot">YUKLANMOQDA...</div>
+
+<div id="app" class="shell" hidden>
+  <aside id="sidebar" class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">MAKTAB AI CONTROL</div>
+        <div class="brand-sub">KELAJAK KENGASHI</div>
+      </div>
+    </div>
+    <nav id="nav" class="nav" aria-label="Asosiy menyu"></nav>
+    <div class="side-foot">
+      <div class="usercard">
+        <div id="userName" class="n"></div>
+        <div id="userRole" class="r"></div>
+      </div>
+      <button id="logoutBtn" class="btn btn-danger" type="button">Chiqish</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button id="menuBtn" class="btn menu-btn" type="button" aria-label="Menyuni ochish">☰</button>
+      <div class="grow">
+        <h1 id="pageTitle"></h1>
+        <div id="pageSub" class="sub"></div>
+      </div>
+      <span id="roleBadge" class="role-badge"></span>
+    </header>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <section id="view"></section>
+  </main>
+</div>
+
+<script src="/static/js/panel.js"></script>
+</body>
+</html>

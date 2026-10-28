@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#080b12">
+    <meta name="description" content="MAKTAB AI CONTROL — maktab Kelajak o'quvchilar kengashi faoliyatini boshqarish va sun'iy intellekt bilan tahlil qilish platformasi.">
+    <title>MAKTAB AI CONTROL | Bosh sahifa</title>
+
+    <style>
+        :root {
+            --bg: #080b12;
+            --panel: rgba(17, 23, 37, .82);
+            --gold: #e9c46a;
+            --blue: #38bdf8;
+            --green: #4ade80;
+            --text: #f4f7fb;
+            --muted: #9ca9bc;
+            --border: rgba(255,255,255,.09);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(56,189,248,.13), transparent 38%),
+                radial-gradient(ellipse at 90% 25%, rgba(233,196,106,.10), transparent 32%),
+                var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button, a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            width: min(1160px, 92%);
+            margin: auto;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8,11,18,.88);
+            backdrop-filter: blur(18px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            color: var(--gold);
+            font-size: 22px;
+            font-weight: 900;
+            background: linear-gradient(145deg, #202b42, #0d111b);
+            border: 1px solid rgba(233,196,106,.45);
+            box-shadow: 0 0 24px rgba(233,196,106,.08);
+        }
+
+        .brand-name {
+            font-size: 16px;
+            font-weight: 900;
+            letter-spacing: 1.1px;
+        }
+
+        .brand-subtitle {
+            color: var(--muted);
+            font-size: 10px;
+            letter-spacing: 2px;
+            margin-top: 4px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 13px 22px;
+            border-radius: 12px;
+            border: 1px solid transparent;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            color: #10131a;
+            background: linear-gradient(135deg, #f5d98b, #d5a83d);
+            box-shadow: 0 8px 28px rgba(233,196,106,.13);
+        }
+
+        .btn-outline {
+            border-color: rgba(56,189,248,.38);
+            background: rgba(56,189,248,.06);
+            color: var(--blue);
+        }
+
+        .hero {
+            min-height: 590px;
+            display: grid;
+            grid-template-columns: 1.15fr .85fr;
+            align-items: center;
+            gap: 60px;
+            padding-top: 75px;
+            padding-bottom: 75px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--green);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.7px;
+            text-transform: uppercase;
+            border: 1px solid rgba(74,222,128,.2);
+            background: rgba(74,222,128,.06);
+            border-radius: 30px;
+            padding: 9px 13px;
+            margin-bottom: 25px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            background: var(--green);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--green);
+        }
+
+        h1 {
+            font-size: clamp(37px, 5.2vw, 65px);
+            line-height: 1.08;
+            letter-spacing: -2px;
+            margin-bottom: 24px;
+        }
+
+        h1 span {
+            display: block;
+            background: linear-gradient(90deg, var(--gold), #fff0bd, var(--blue));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero-description {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.9;
+            max-width: 590px;
+            margin-bottom: 30px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 13px;
+        }
+
+        .hero-note {
+            margin-top: 24px;
+            color: #718096;
+            font-size: 12px;
+        }
+
+        .visual {
+            position: relative;
+            min-height: 390px;
+            display: grid;
+            place-items: center;
+        }
+
+        .orbit {
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            border: 1px solid rgba(56,189,248,.18);
+            border-radius: 50%;
+            box-shadow: 0 0 70px rgba(56,189,248,.06),
+                        inset 0 0 60px rgba(56,189,248,.04);
+        }
+
+        .orbit::before,
+        .orbit::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(233,196,106,.15);
+            border-radius: 50%;
+        }
+
+        .orbit::before {
+            inset: 25px;
+        }
+
+        .orbit::after {
+            inset: 55px;
+        }
+
+        .core {
+            position: relative;
+            width: 190px;
+            height: 220px;
+            border-radius: 30px;
+            border: 1px solid rgba(56,189,248,.4);
+            background: linear-gradient(145deg, rgba(22,37,57,.96), rgba(10,14,24,.98));
+            box-shadow: 0 0 65px rgba(56,189,248,.13),
+                        inset 0 0 35px rgba(56,189,248,.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .core-symbol {
+            font-size: 55px;
+            color: var(--gold);
+            text-shadow: 0 0 30px rgba(233,196,106,.4);
+        }
+
+        .core-title {
+            margin-top: 13px;
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        .core-caption {
+            color: var(--blue);
+            font-size: 9px;
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        .floating-card {
+            position: absolute;
+            padding: 14px 17px;
+            border: 1px solid var(--border);
+            background: rgba(15,21,34,.92);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,.22);
+        }
+
+        .floating-card strong {
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .floating-card small {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .card-one {
+            top: 42px;
+            right: -4px;
+        }
+
+        .card-two {
+            bottom: 40px;
+            left: -5px;
+        }
+
+        .card-icon {
+            color: var(--blue);
+            margin-right: 6px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .section {
+            padding: 65px 0;
+        }
+
+        .section-heading {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 38px;
+        }
+
+        .section-heading .mini {
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 13px;
+        }
+
+        h2 {
+            font-size: clamp(25px, 3.3vw, 37px);
+            margin-bottom: 14px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .feature {
+            padding: 27px;
+            border-radius: 19px;
+            border: 1px solid var(--border);
+            background: linear-gradient(145deg, rgba(19,26,41,.88), rgba(11,15,24,.8));
+            transition: .25s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-5px);
+            border-color: rgba(56,189,248,.3);
+        }
+
+        .feature-icon {
+            width: 47px;
+            height: 47px;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            font-size: 22px;
+            background: rgba(56,189,248,.09);
+            border: 1px solid rgba(56,189,248,.16);
+        }
+
+        .feature h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .feature p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.85;
+        }
+
+        .cta {
+            margin: 50px auto 80px;
+            padding: 42px;
+            text-align: center;
+            border: 1px solid rgba(233,196,106,.22);
+            border-radius: 24px;
+            background:
+                radial-gradient(ellipse at top, rgba(233,196,106,.09), transparent 65%),
+                rgba(16,21,32,.75);
+        }
+
+        .cta p {
+            color: var(--muted);
+            line-height: 1.8;
+            margin: 13px auto 24px;
+            max-width: 600px;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 25px 0;
+            color: #778397;
+            font-size: 12px;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .footer-brand {
+            color: var(--gold);
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 850px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                padding-top: 65px;
+            }
+
+            .visual {
+                min-height: 360px;
+            }
+
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .card-one {
+                right: 2%;
+            }
+
+            .card-two {
+                left: 2%;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .brand-name {
+                font-size: 13px;
+            }
+
+            .brand-subtitle {
+                font-size: 8px;
+            }
+
+            .navbar > .btn {
+                padding: 11px 13px;
+                font-size: 12px;
+            }
+
+            h1 {
+                letter-spacing: -1.2px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .orbit {
+                width: 270px;
+                height: 270px;
+            }
+
+            .core {
+                width: 160px;
+                height: 190px;
+            }
+
+            .floating-card {
+                padding: 11px;
+            }
+
+            .floating-card strong {
+                font-size: 10px;
+            }
+
+            .floating-card small {
+                font-size: 9px;
+            }
+
+            .cta {
+                padding: 28px 18px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: .01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container navbar">
+            <a class="brand" href="/" aria-label="MAKTAB AI CONTROL bosh sahifa">
+                <div class="brand-icon">T</div>
+                <div>
+                    <div class="brand-name">MAKTAB AI CONTROL</div>
+                    <div class="brand-subtitle">SMART EDUCATION SYSTEM</div>
+                </div>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#imkoniyatlar">Imkoniyatlar</a>
+                <a href="#haqida">Loyiha haqida</a>
+            </nav>
+
+            <!-- MUHIM: Kirish tugmasi /login ga boradi -->
+            <a class="btn btn-primary" href="/login">
+                Kirish <span aria-hidden="true">→</span>
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section class="container hero" id="haqida">
+            <div>
+                <div class="eyebrow">
+                    <span class="status-dot"></span>
+                    TA'LIM UCHUN YANGI AVLOD PLATFORMASI
+                </div>
+
+                <h1>
+                    Ta'lim boshqaruvi
+                    <span>yangi bosqichda.</span>
+                </h1>
+
+                <p class="hero-description">
+                    MAKTAB AI CONTROL — Kelajak lideri, yetti yo'nalish
+                    koordinatorlari, maktab maslahatchisi va direktor uchun
+                    yagona raqamli boshqaruv tizimi. Topshiriq va hisobotlarni
+                    kuzating, natijalarni solishtiring va sun'iy intellekt
+                    tavsiyalaridan foydalaning.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="/login">
+                        Platformaga kirish <span aria-hidden="true">→</span>
+                    </a>
+
+                    <a class="btn btn-outline" href="#imkoniyatlar">
+                        Imkoniyatlarni ko'rish
+                    </a>
+                </div>
+
+                <div class="hero-note">
+                    ◆ Markazlashgan boshqaruv &nbsp; ◆ Rol asosidagi kirish
+                    &nbsp; ◆ AI yordamchisi
+                </div>
+            </div>
+
+            <div class="visual" aria-label="MAKTAB AI CONTROL platformasi tasviri">
+                <div class="orbit"></div>
+
+                <div class="core">
+                    <div class="core-symbol">✦</div>
+                    <div class="core-title">MAKTAB AI</div>
+                    <div class="core-caption">INTELLIGENCE CORE</div>
+                </div>
+
+                <div class="floating-card card-one">
+                    <strong><span class="card-icon">✦</span> AI ANALITIKA</strong>
+                    <small>Ma'lumotlardan xulosa chiqarish</small>
+                </div>
+
+                <div class="floating-card card-two">
+                    <strong><span class="card-icon">◈</span> YAGONA TIZIM</strong>
+                    <small>Yetti yo'nalish va bitta kengash</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="imkoniyatlar">
+            <div class="container">
+                <div class="section-heading">
+                    <div class="mini">PLATFORMA IMKONIYATLARI</div>
+                    <h2>Barcha jarayonlar — bir joyda</h2>
+                    <p>
+                        Ta'lim muassasalaridagi ishlarni tizimli kuzatish,
+                        muvofiqlashtirish va tahlil qilish uchun yaratilgan
+                        raqamli platforma.
+                    </p>
+                </div>
+
+                <div class="features">
+                    <article class="feature">
+                        <div class="feature-icon">🏫</div>
+                        <h3>Kengash boshqaruvi</h3>
+                        <p>
+                            Kelajak o'quvchilar kengashi faoliyatini
+                            markazlashgan tarzda yuritish va kerakli ma'lumotni
+                            tegishli mas'ullarga taqdim etish.
+                        </p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-icon">👥</div>
+                        <h3>Yo'nalishlar va koordinatorlar</h3>
+                        <p>
+                            Ta'lim, media, madaniyat, ekologiya, sport,
+                            IT va ijtimoiy tashabbuslar: har bir koordinator
+                            faqat o'z yo'nalishi doirasida ishlaydi.
+                        </p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-icon">🤖</div>
+                        <h3>Sun'iy intellekt</h3>
+                        <p>
+                            Ma'lumotlarni tahlil qilish, muammolarni
+                            aniqlash va qaror qabul qilish jarayonida
+                            yordam beruvchi AI imkoniyatlari.
+                        </p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-icon">📊</div>
+                        <h3>Hisobotlar va tahlil</h3>
+                        <p>
+                            Hisobotlar holatini kuzatish, natijalarni
+                            ko'rish va boshqaruv uchun zarur
+                            ma'lumotlarni bir joyda jamlash.
+                        </p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-icon">🎯</div>
+                        <h3>Vazifalar nazorati</h3>
+                        <p>
+                            Vazifalarni belgilash, bajarilish holatini
+                            kuzatish va mas'ullar o'rtasida
+                            muvofiqlashtirish.
+                        </p>
+                    </article>
+
+                    <article class="feature">
+                        <div class="feature-icon">🔐</div>
+                        <h3>Xavfsiz kirish</h3>
+                        <p>
+                            Foydalanuvchi rollari va ruxsatlar orqali
+                            har bir hisobning imkoniyatlarini
+                            server tomonida nazorat qilish.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="cta">
+                <div class="section-heading" style="margin-bottom: 0;">
+                    <div class="mini">MAKTAB AI CONTROL</div>
+                    <h2>Raqamli boshqaruvni boshlang</h2>
+                </div>
+
+                <p>
+                    Platformaga o'z hisobingiz orqali kiring va
+                    sizga biriktirilgan imkoniyatlardan foydalaning.
+                </p>
+
+                <a class="btn btn-primary" href="/login">
+                    Kirish sahifasiga o'tish →
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <div>
+                <span class="footer-brand">MAKTAB AI CONTROL</span>
+                <span> — Smart Education System</span>
+            </div>
+
+            <div>
+                © <span id="year"></span> MAKTAB AI CONTROL
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById("year").textContent =
+            new Date().getFullYear();
+
+        // Kirish tugmalari /login sahifasiga olib boradi.
+        // API hujjatlari (/docs) bosh sahifadagi kirish tugmasi bilan bog'lanmagan.
+    </script>
+</body>
+</html>

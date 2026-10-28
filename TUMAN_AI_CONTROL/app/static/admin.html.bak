@@ -1,0 +1,587 @@
+```html
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080b12">
+<title>MAKTAB AI CONTROL — Admin</title>
+
+<style>
+:root {
+  --bg:#080b12;
+  --panel:#111725;
+  --panel2:#151f30;
+  --gold:#f4c76b;
+  --blue:#48d9ff;
+  --green:#4ade80;
+  --red:#fb7185;
+  --text:#edf3ff;
+  --muted:#91a0b8;
+  --border:#29364b;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:
+    radial-gradient(ellipse at top right,#172b43 0,transparent 45%),
+    var(--bg);
+  color:var(--text);
+  font-family:Segoe UI,Arial,sans-serif;
+}
+button,input,select { font:inherit; }
+button {
+  cursor:pointer;
+  border:1px solid #3a4960;
+  border-radius:10px;
+  padding:11px 15px;
+  color:var(--text);
+  background:#182235;
+  transition:.2s;
+}
+button:hover { border-color:var(--blue); transform:translateY(-1px); }
+button:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:17px 5%;
+  border-bottom:1px solid var(--border);
+  background:#080b12ee;
+  position:sticky;
+  top:0;
+  z-index:10;
+  backdrop-filter:blur(16px);
+}
+.brand { font-weight:900; letter-spacing:1px; }
+.brand span { color:var(--gold); }
+.header-right { display:flex; align-items:center; gap:12px; }
+.pill {
+  border:1px solid var(--border);
+  border-radius:30px;
+  padding:7px 11px;
+  font-size:11px;
+  color:var(--green);
+}
+main { max-width:1300px; margin:auto; padding:30px 5%; }
+.eyebrow { color:var(--blue); font-size:11px; letter-spacing:3px; font-weight:800; }
+h1 { font-size:clamp(27px,4vw,40px); margin:12px 0; }
+h2 { font-size:20px; margin:0 0 8px; }
+h3 { margin:0 0 10px; font-size:15px; }
+p { color:var(--muted); line-height:1.65; }
+.muted { color:var(--muted); font-size:12px; }
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(205px,1fr));
+  gap:15px;
+  margin:24px 0;
+}
+.card {
+  min-width:0;
+  background:linear-gradient(145deg,var(--panel2),#0d1320);
+  border:1px solid var(--border);
+  border-radius:17px;
+  padding:20px;
+}
+.stat-top { display:flex; justify-content:space-between; align-items:center; gap:10px; }
+.stat-icon { font-size:22px; }
+.number { font-size:32px; color:var(--gold); font-weight:900; margin-top:16px; }
+.stat-label { color:var(--muted); font-size:12px; margin-top:5px; }
+.section { margin-top:24px; }
+.section-head {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:16px;
+}
+.section-head p { margin:4px 0 0; font-size:12px; }
+.panel-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.status { color:var(--blue); font-weight:800; }
+.actions { display:flex; flex-wrap:wrap; gap:9px; }
+.primary { background:linear-gradient(135deg,#f5d98b,#d5a83d); color:#10131a; border:0; font-weight:800; }
+.danger { color:#fecdd3; border-color:#713747; }
+.small { font-size:12px; padding:8px 10px; }
+#notice {
+  margin-top:14px;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  color:var(--muted);
+  overflow-wrap:anywhere;
+  font-size:13px;
+}
+#notice.ok { color:var(--green); border-color:#23533c; }
+#notice.error { color:#fda4af; border-color:#713747; }
+#notice.info { color:var(--gold); }
+.table-wrap { overflow:auto; width:100%; }
+table { width:100%; border-collapse:collapse; font-size:13px; }
+th,td { text-align:left; padding:12px 10px; border-bottom:1px solid var(--border); }
+th { color:var(--muted); font-weight:700; white-space:nowrap; }
+td { overflow-wrap:anywhere; }
+tbody tr:hover { background:#ffffff05; }
+.empty { text-align:center; color:var(--muted); padding:25px; }
+.badge {
+  display:inline-block;
+  padding:5px 8px;
+  border-radius:20px;
+  font-size:10px;
+  background:#1b2a3e;
+  color:var(--blue);
+}
+.badge.green { background:#123124; color:var(--green); }
+.badge.gold { background:#392d18; color:var(--gold); }
+.badge.red { background:#391c27; color:#fda4af; }
+.ai-box {
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:15px;
+  align-items:start;
+}
+.ai-face {
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  font-size:28px;
+  background:linear-gradient(145deg,#19364b,#111725);
+  border:1px solid #2d7189;
+  box-shadow:0 0 25px #48d9ff12;
+}
+.ai-face.pulse { animation:pulse 1.6s infinite; }
+@keyframes pulse {
+  0%,100% { box-shadow:0 0 10px #48d9ff12; }
+  50% { box-shadow:0 0 25px #48d9ff45; }
+}
+footer { padding:24px; text-align:center; color:var(--muted); font-size:11px; }
+@media(max-width:760px) {
+  .panel-grid { grid-template-columns:1fr; }
+  header { padding:14px 4%; }
+  main { padding:24px 4%; }
+  .pill { display:none; }
+}
+@media(max-width:430px) {
+  .brand { font-size:12px; }
+  header button { padding:9px 10px; font-size:12px; }
+  .card { padding:16px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="brand">MAKTAB <span>AI CONTROL</span></div>
+  <div class="header-right">
+    <span class="pill" id="headerStatus">● Tekshirilmoqda</span>
+    <button onclick="refreshData()">Yangilash ↻</button>
+    <a href="/panel" style="color:#48d9ff;text-decoration:none;margin-right:12px">Rol paneli</a>
+    <button class="danger" onclick="logout()">Chiqish ↗</button>
+  </div>
+</header>
+
+<main>
+  <div class="eyebrow">ADMINISTRATOR MARKAZI · V2.0</div>
+  <h1>Boshqaruv paneli</h1>
+  <p id="welcome">Administrator sessiyasi tekshirilmoqda...</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="stat-top"><h3>🏫 Maktablar</h3><span class="stat-icon">◈</span></div>
+      <div class="number" id="schools">—</div>
+      <div class="stat-label" id="activeSchools">Faol maktablar: —</div>
+    </div>
+    <div class="card">
+      <div class="stat-top"><h3>👥 Foydalanuvchilar</h3><span class="stat-icon">◉</span></div>
+      <div class="number" id="users">—</div>
+      <div class="stat-label">Tizimdagi hisoblar</div>
+    </div>
+    <div class="card">
+      <div class="stat-top"><h3>📊 Hisobotlar</h3><span class="stat-icon">▤</span></div>
+      <div class="number" id="reports">—</div>
+      <div class="stat-label">Jami hisobotlar</div>
+    </div>
+    <div class="card">
+      <div class="stat-top"><h3>🚀 Loyihalar</h3><span class="stat-icon">✦</span></div>
+      <div class="number" id="projects">—</div>
+      <div class="stat-label">Jami loyihalar</div>
+    </div>
+    <div class="card">
+      <div class="stat-top"><h3>⏳ Ochiq vazifalar</h3><span class="stat-icon">◷</span></div>
+      <div class="number" id="pendingTasks">—</div>
+      <div class="stat-label">Bajarilishi kutilayotgan</div>
+    </div>
+    <div class="card">
+      <div class="stat-top"><h3>✅ Bajarilgan vazifalar</h3><span class="stat-icon">✓</span></div>
+      <div class="number" id="completedTasks">—</div>
+      <div class="stat-label">Yakunlangan vazifalar</div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="section-head">
+      <div>
+        <h2>🤖 MAKTAB AI — tizim yordamchisi</h2>
+        <p>Server, sessiya va boshqaruv API holati.</p>
+      </div>
+      <span class="badge" id="systemBadge">TEKSHIRILMOQDA</span>
+    </div>
+    <div class="ai-box">
+      <div class="ai-face" id="aiFace">🤖</div>
+      <div>
+        <strong id="aiTitle">Tizim bilan aloqa o‘rnatilmoqda...</strong>
+        <p id="aiText">API javoblari tekshiriladi. Ma’lumotlar backenddan olinadi.</p>
+      </div>
+    </div>
+    <div id="notice" role="status" aria-live="polite">Boshlang‘ich tekshiruv...</div>
+  </div>
+
+  <div class="panel-grid section">
+    <div class="card">
+      <div class="section-head">
+        <div><h2>🏫 Maktablar</h2><p>Backenddan olingan maktablar ro‘yxati.</p></div>
+        <button class="small" onclick="loadSchools()">Ko‘rish ↻</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Maktab</th><th>Holat</th></tr></thead>
+          <tbody id="schoolsTable"><tr><td colspan="3" class="empty">Ma’lumot yuklanmagan</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div><h2>👥 Foydalanuvchilar</h2><p>Rollar va hisoblar.</p></div>
+        <button class="small" onclick="loadUsers()">Ko‘rish ↻</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Foydalanuvchi</th><th>Rol</th></tr></thead>
+          <tbody id="usersTable"><tr><td colspan="3" class="empty">Ma’lumot yuklanmagan</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div><h2>📊 Hisobotlar</h2><p>Oxirgi hisobotlar ro‘yxati.</p></div>
+        <button class="small" onclick="loadReports()">Ko‘rish ↻</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Sarlavha</th><th>Holat</th></tr></thead>
+          <tbody id="reportsTable"><tr><td colspan="3" class="empty">Ma’lumot yuklanmagan</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-head">
+        <div><h2>📋 Vazifalar</h2><p>Vazifalar va ularning holati.</p></div>
+        <button class="small" onclick="loadTasks()">Ko‘rish ↻</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Vazifa</th><th>Holat</th></tr></thead>
+          <tbody id="tasksTable"><tr><td colspan="3" class="empty">Ma’lumot yuklanmagan</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="card section">
+    <div class="section-head">
+      <div>
+        <h2>🛡️ Audit jurnali</h2>
+        <p>Admin amallari tarixi. Faqat administrator ko‘ra oladi.</p>
+      </div>
+      <button onclick="loadAudit()">Jurnalni yangilash ↻</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Vaqt</th><th>Foydalanuvchi ID</th><th>Amal</th><th>Obyekt</th><th>Tafsilot</th></tr></thead>
+        <tbody id="auditTable"><tr><td colspan="5" class="empty">Jurnalni yuklash uchun tugmani bosing</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer>MAKTAB AI CONTROL · SECURE ADMIN CONSOLE · <span id="year"></span></footer>
+
+<script>
+"use strict";
+
+const token = localStorage.getItem("tuman_admin_token");
+let busy = false;
+
+const $ = id => document.getElementById(id);
+
+function logout() {
+  localStorage.removeItem("tuman_admin_token");
+  localStorage.removeItem("maktab_token");
+  location.replace("/login");
+}
+
+function setNotice(message, type = "info") {
+  const el = $("notice");
+  el.textContent = message;
+  el.className = type;
+}
+
+function setAI(title, message, mood = "normal") {
+  $("aiTitle").textContent = title;
+  $("aiText").textContent = message;
+  $("aiFace").textContent =
+    mood === "happy" ? "🤖" :
+    mood === "error" ? "⚠️" : "🤖";
+  $("aiFace").classList.toggle("pulse", mood === "normal");
+}
+
+function setSystem(ok, label) {
+  $("systemBadge").textContent = label;
+  $("systemBadge").className = ok ? "badge green" : "badge red";
+  $("headerStatus").textContent = ok ? "● ONLINE" : "● TEKSHIRING";
+  $("headerStatus").style.color = ok ? "var(--green)" : "var(--gold)";
+}
+
+async function api(path) {
+  if (!token) {
+    logout();
+    throw new Error("Sessiya topilmadi. Iltimos, qayta kiring.");
+  }
+
+  const response = await fetch(path, {
+    method: "GET",
+    headers: { "Authorization": "Bearer " + token },
+    cache: "no-store"
+  });
+
+  if (response.status === 401 || response.status === 403) {
+    logout();
+    throw new Error("Sessiya tugagan yoki ruxsat yo‘q.");
+  }
+
+  if (!response.ok) {
+    let detail = "";
+    try {
+      const body = await response.json();
+      detail = body.detail ? " — " + body.detail : "";
+    } catch (_) {}
+    throw new Error(path + " — HTTP " + response.status + detail);
+  }
+
+  return response.json();
+}
+
+function numberValue(value) {
+  return typeof value === "number" && Number.isFinite(value)
+    ? value.toLocaleString("uz-UZ")
+    : "—";
+}
+
+function roleLabel(role) {
+  const roles = {
+    admin: "Administrator",
+    director: "Maktab direktori",
+    kelajak_leader: "Kelajak lideri",
+    coordinator: "Koordinator",
+    school_advisor: "Maktab maslahatchisi",
+    district_coordinator: "Tuman koordinatori (eski)",
+    school_coordinator: "Maktab koordinatori (eski)"
+  };
+  return roles[role] || role || "Noma’lum";
+}
+
+function statusBadge(value) {
+  const text = String(value ?? "noma’lum");
+  const lower = text.toLowerCase();
+  let cls = "badge";
+  if (["active", "completed", "approved", "accepted"].includes(lower)) cls += " green";
+  else if (["rejected", "inactive", "cancelled"].includes(lower)) cls += " red";
+  else cls += " gold";
+  return { text, cls };
+}
+
+// HTMLga faqat ishonchli, matn sifatida kiritish uchun.
+function cell(value) {
+  const td = document.createElement("td");
+  td.textContent = value === null || value === undefined || value === ""
+    ? "—"
+    : String(value);
+  return td;
+}
+
+function badgeCell(value) {
+  const td = document.createElement("td");
+  const info = statusBadge(value);
+  const span = document.createElement("span");
+  span.className = info.cls;
+  span.textContent = info.text;
+  td.appendChild(span);
+  return td;
+}
+
+function emptyRow(tbodyId, columns, message) {
+  const tbody = $(tbodyId);
+  tbody.replaceChildren();
+  const tr = document.createElement("tr");
+  const td = document.createElement("td");
+  td.colSpan = columns;
+  td.className = "empty";
+  td.textContent = message;
+  tr.appendChild(td);
+  tbody.appendChild(tr);
+}
+
+function showRows(tbodyId, columns, rows, renderer) {
+  const tbody = $(tbodyId);
+  tbody.replaceChildren();
+
+  if (!Array.isArray(rows) || rows.length === 0) {
+    emptyRow(tbodyId, columns, "Hozircha ma’lumot yo‘q");
+    return;
+  }
+
+  for (const item of rows.slice(0, 30)) {
+    const tr = document.createElement("tr");
+    renderer(tr, item);
+    tbody.appendChild(tr);
+  }
+}
+
+async function loadSummary() {
+  const s = await api("/dashboard/summary");
+
+  $("schools").textContent = numberValue(s.schools_count);
+  $("activeSchools").textContent =
+    "Faol maktablar: " + numberValue(s.active_schools_count);
+  $("users").textContent = numberValue(s.users_count);
+  $("reports").textContent = numberValue(s.reports_count);
+  $("projects").textContent = numberValue(s.projects_count);
+  $("pendingTasks").textContent = numberValue(s.tasks_pending_count);
+  $("completedTasks").textContent = numberValue(s.tasks_completed_count);
+
+  return s;
+}
+
+async function loadSchools() {
+  const rows = await api("/schools");
+  showRows("schoolsTable", 3, rows, (tr, item) => {
+    tr.append(cell(item.id));
+    tr.append(cell(item.name));
+    tr.append(badgeCell(item.is_active ? "active" : "inactive"));
+  });
+}
+
+async function loadUsers() {
+  const rows = await api("/users");
+  showRows("usersTable", 3, rows, (tr, item) => {
+    tr.append(cell(item.id));
+    tr.append(cell(item.full_name || item.username));
+    tr.append(badgeCell(roleLabel(item.role)));
+  });
+}
+
+async function loadReports() {
+  const rows = await api("/reports");
+  showRows("reportsTable", 3, rows, (tr, item) => {
+    tr.append(cell(item.id));
+    tr.append(cell(item.title));
+    tr.append(badgeCell(item.status));
+  });
+}
+
+async function loadTasks() {
+  const rows = await api("/tasks");
+  showRows("tasksTable", 3, rows, (tr, item) => {
+    tr.append(cell(item.id));
+    tr.append(cell(item.title));
+    tr.append(badgeCell(item.status));
+  });
+}
+
+async function loadAudit() {
+  const rows = await api("/admin/audit-logs?limit=30");
+  showRows("auditTable", 5, rows, (tr, item) => {
+    let time = "—";
+    if (item.created_at) {
+      const date = new Date(item.created_at);
+      if (!Number.isNaN(date.getTime())) time = date.toLocaleString("uz-UZ");
+    }
+    tr.append(cell(time));
+    tr.append(cell(item.user_id));
+    tr.append(cell(item.action));
+    tr.append(cell(
+      (item.entity_type || "—") +
+      (item.entity_id != null ? " #" + item.entity_id : "")
+    ));
+    tr.append(cell(item.details));
+  });
+}
+
+async function safeLoad(label, fn) {
+  try {
+    await fn();
+    return null;
+  } catch (error) {
+    console.error(label, error);
+    return label + ": " + error.message;
+  }
+}
+
+async function refreshData() {
+  if (busy) return;
+  busy = true;
+
+  setSystem(false, "YUKLANMOQDA");
+  setNotice("Ma’lumotlar backenddan olinmoqda...");
+  setAI("Tizimni tekshiryapman...", "API va administrator sessiyasi tekshirilmoqda.");
+
+  try {
+    const me = await api("/auth/me");
+
+    if (me.role !== "admin") {
+      logout();
+      throw new Error("Bu sahifa faqat administrator uchun.");
+    }
+
+    $("welcome").textContent =
+      "Xush kelibsiz, " + (me.full_name || me.username || "Administrator") + "!";
+
+    const results = await Promise.all([
+      safeLoad("Statistika", loadSummary),
+      safeLoad("Maktablar", loadSchools),
+      safeLoad("Foydalanuvchilar", loadUsers),
+      safeLoad("Hisobotlar", loadReports),
+      safeLoad("Vazifalar", loadTasks)
+    ]);
+
+    const errors = results.filter(Boolean);
+
+    setSystem(true, errors.length ? "QISMAN ONLINE" : "ONLINE");
+
+    if (errors.length) {
+      setNotice("Sessiya ishlayapti, lekin ayrim bo‘limlar yuklanmadi. " + errors.join(" | "), "error");
+      setAI("Ayrim bo‘limlarni tekshirish kerak.", errors.join(" | "), "error");
+    } else {
+      setNotice("Administrator tasdiqlandi. Asosiy ma’lumotlar muvaffaqiyatli yangilandi.", "ok");
+      setAI("Hammasi joyida!", "Sessiya tasdiqlandi. Dashboard va asosiy bo‘limlar yangilandi.", "happy");
+    }
+  } catch (error) {
+    console.error(error);
+    setSystem(false, "XATO");
+    setNotice(error.message, "error");
+    setAI("Ulanishda muammo bor.", error.message, "error");
+  } finally {
+    busy = false;
+  }
+}
+
+$("year").textContent = new Date().getFullYear();
+refreshData();
+</script>
+</body>
+</html>
+```

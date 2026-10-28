@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TUMAN AI CONTROL — Admin</title>
+<style>
+:root{--bg:#080b12;--panel:#111725;--gold:#f4c76b;--blue:#48d9ff;--text:#edf3ff;--muted:#91a0b8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top right,#172b43 0,transparent 45%),var(--bg);color:var(--text);font-family:Segoe UI,Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:20px 5%;border-bottom:1px solid #263247;background:#080b12dd;position:sticky;top:0}
+.brand{font-weight:800;letter-spacing:1px}.brand span{color:var(--gold)}
+button{cursor:pointer;border:1px solid #3a4960;border-radius:10px;padding:11px 15px;color:var(--text);background:#182235}
+button:hover{border-color:var(--blue)}
+main{max-width:1200px;margin:auto;padding:32px 5%}
+.eyebrow{color:var(--blue);font-size:12px;letter-spacing:3px;font-weight:700}
+h1{font-size:clamp(27px,5vw,42px);margin:12px 0}
+p{color:var(--muted);line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin:28px 0}
+.card{background:linear-gradient(145deg,#151e2f,#0d1320);border:1px solid #29364b;border-radius:18px;padding:22px}
+.card h3{margin:0 0 10px}.number{font-size:30px;color:var(--gold);font-weight:800}
+.section{margin-top:24px}.status{color:var(--blue);font-weight:600}
+#notice{margin-top:16px;color:var(--gold);overflow-wrap:anywhere}
+footer{padding:24px;text-align:center;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">TUMAN <span>AI CONTROL</span></div>
+  <button onclick="logout()">Chiqish ↗</button>
+</header>
+<main>
+  <div class="eyebrow">ADMINISTRATOR MARKAZI · V1.0</div>
+  <h1>Boshqaruv paneli</h1>
+  <p id="welcome">Administrator ma’lumotlari tekshirilmoqda...</p>
+
+  <div class="grid">
+    <div class="card"><h3>🏫 Maktablar</h3><div class="number" id="schools">—</div><p>Maktablar statistikasi</p></div>
+    <div class="card"><h3>👥 Koordinatorlar</h3><div class="number" id="coordinators">—</div><p>Koordinatorlar statistikasi</p></div>
+    <div class="card"><h3>📊 Hisobotlar</h3><div class="number" id="reports">—</div><p>Hisobotlar statistikasi</p></div>
+    <div class="card"><h3>⚡ Tizim holati</h3><div class="number status" id="system">Tekshirilmoqda</div><p>Server bilan aloqa</p></div>
+  </div>
+
+  <div class="card section">
+    <h3>🤖 TUMAN AI — tizim yordamchisi</h3>
+    <p>Administrator sessiyasi va boshqaruv API holatini tekshirish.</p>
+    <button onclick="refreshData()">Ma’lumotlarni yangilash ↻</button>
+    <div id="notice" role="status"></div>
+  </div>
+</main>
+<footer>TUMAN AI CONTROL · SECURE ADMIN CONSOLE</footer>
+<script>
+const token = localStorage.getItem("tuman_admin_token");
+
+function logout(){
+  localStorage.removeItem("tuman_admin_token");
+  location.replace("/login");
+}
+
+async function api(path){
+  const response = await fetch(path,{
+    headers:{"Authorization":"Bearer "+token}
+  });
+  if(response.status===401 || response.status===403){
+    logout();
+    throw new Error("Sessiya tugagan yoki ruxsat yo‘q. Qayta kiring.");
+  }
+  if(!response.ok) throw new Error(path+" — HTTP "+response.status);
+  return response.json();
+}
+
+async function refreshData(){
+  const notice=document.getElementById("notice");
+  document.getElementById("system").textContent="Tekshirilmoqda";
+  try{
+    if(!token) throw new Error("Token topilmadi. Qayta login qiling.");
+    const me=await api("/auth/me");
+    if(me.role!=="admin") throw new Error("Administrator huquqi talab qilinadi.");
+    document.getElementById("welcome").textContent=
+      "Xush kelibsiz, "+(me.full_name || me.username || "Administrator")+"!";
+    document.getElementById("system").textContent="ONLINE";
+    notice.textContent="Admin sessiyasi tasdiqlandi.";
+    try{
+      const s=await api("/dashboard/summary");
+      for(const key of ["schools","coordinators","reports"]){
+        if(s[key]!==undefined) document.getElementById(key).textContent=s[key];
+      }
+      notice.textContent="Sessiya tasdiqlandi. Mavjud dashboard ma’lumotlari yangilandi.";
+    }catch(err){
+      notice.textContent="Sessiya tasdiqlandi. Statistik endpoint yoki ayrim maydonlar hozircha mavjud emas: "+err.message;
+    }
+  }catch(err){
+    document.getElementById("system").textContent="XATO";
+    notice.textContent=err.message;
+  }
+}
+refreshData();
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#04060c">
+<meta name="robots" content="noindex">
+<title>MAKTAB AI CONTROL | Kirish</title>
+<link rel="stylesheet" href="/static/css/maktab.css">
+</head>
+<body>
+<div class="auth-wrap">
+  <form id="loginForm" class="card auth-card" autocomplete="on" novalidate>
+    <div class="brand">
+      <div class="brand-mark">M</div>
+      <div>
+        <div class="brand-name">MAKTAB AI CONTROL</div>
+        <div class="brand-sub">KELAJAK KENGASHI</div>
+      </div>
+    </div>
+    <h1>Tizimga kirish</h1>
+    <p class="lead">Rolingizga mos panel avtomatik ochiladi.</p>
+
+    <div id="error" class="notice err" role="alert" hidden></div>
+
+    <div class="field">
+      <label for="username">Login</label>
+      <input id="username" class="input" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required>
+    </div>
+    <div class="field">
+      <label for="password">Parol</label>
+      <div class="pw-row">
+        <input id="password" class="input" name="password" type="password" autocomplete="current-password" required>
+        <button id="togglePw" class="btn btn-sm toggle" type="button" aria-label="Parolni ko'rsatish">Ko'rsat</button>
+      </div>
+    </div>
+    <button id="submitBtn" class="btn btn-primary" type="submit">Xavfsiz kirish →</button>
+  </form>
+</div>
+
+<script>
+(function () {
+  var TOKEN_KEY = "maktab_token";
+  var LEGACY_KEY = "tuman_admin_token"; // eski /admin sahifasi uchun
+  var form = document.getElementById("loginForm");
+  var errorBox = document.getElementById("error");
+  var button = document.getElementById("submitBtn");
+  var pw = document.getElementById("password");
+
+  document.getElementById("togglePw").addEventListener("click", function () {
+    var show = pw.type === "password";
+    pw.type = show ? "text" : "password";
+    this.textContent = show ? "Yashir" : "Ko'rsat";
+  });
+
+  function showError(message) {
+    errorBox.textContent = message;
+    errorBox.hidden = false;
+  }
+
+  // Allaqachon kirgan bo'lsa, panelga o'tkazamiz (token haqiqiyligini panel tekshiradi).
+  if (localStorage.getItem(TOKEN_KEY)) { window.location.replace("/panel"); return; }
+
+  form.addEventListener("submit", async function (event) {
+    event.preventDefault();
+    errorBox.hidden = true;
+
+    var username = document.getElementById("username").value.trim();
+    if (!username || !pw.value) { showError("Login va parolni kiriting."); return; }
+
+    button.disabled = true;
+    button.textContent = "Tekshirilmoqda...";
+
+    try {
+      var body = new URLSearchParams();
+      body.set("username", username);
+      body.set("password", pw.value);
+
+      var response = await fetch("/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: body.toString()
+      });
+
+      if (response.status === 429) {
+        var limited = {};
+        try { limited = await response.json(); } catch (e) {}
+        throw new Error(limited.detail || "Juda ko'p urinish. Birozdan keyin qayta urinib ko'ring.");
+      }
+      if (response.status === 401) throw new Error("Login yoki parol noto'g'ri.");
+      if (!response.ok) throw new Error("Kirish amalga oshmadi (HTTP " + response.status + ").");
+
+      var data = await response.json();
+      if (!data.access_token) throw new Error("Server token qaytarmadi.");
+
+      var meResponse = await fetch("/auth/me", { headers: { "Authorization": "Bearer " + data.access_token } });
+      if (!meResponse.ok) throw new Error("Foydalanuvchi ma'lumotini tekshirib bo'lmadi.");
+      var user = await meResponse.json();
+
+      localStorage.setItem(TOKEN_KEY, data.access_token);
+      if (user.role === "admin") localStorage.setItem(LEGACY_KEY, data.access_token);
+      else localStorage.removeItem(LEGACY_KEY);
+
+      pw.value = "";
+      window.location.replace("/panel");
+    } catch (error) {
+      showError(error.message || "Ulanishda xatolik yuz berdi.");
+    } finally {
+      button.disabled = false;
+      button.textContent = "Xavfsiz kirish →";
+    }
+  });
+})();
+</script>
+</body>
+</html>

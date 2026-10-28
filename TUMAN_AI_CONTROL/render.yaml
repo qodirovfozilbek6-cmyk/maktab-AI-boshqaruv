@@ -1,0 +1,23 @@
+# Render Blueprint (ixtiyoriy). Maxfiy qiymatlar bu yerga YOZILMAYDI:
+# ularni Render panelida (Environment) qo'lda kiriting.
+services:
+  - type: web
+    name: maktab-ai-control
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET_KEY
+        sync: false
+      - key: JWT_EXPIRE_MINUTES
+        value: "60"
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_BOT_USERNAME
+        sync: false
