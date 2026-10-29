@@ -19,8 +19,8 @@ if len(JWT_SECRET_KEY) < 64:
 
 
 def hash_password(password: str) -> str:
-    if len(password) < 12:
-        raise ValueError("Parol kamida 12 belgidan iborat bo'lishi kerak.")
+    if len(password) < 8:
+        raise ValueError("Parol kamida 8 belgidan iborat bo'lishi kerak.")
     return password_hash.hash(password)
 
 
