@@ -4,12 +4,7 @@ import re
 
 from aiogram import Bot, Dispatcher, F
 from aiogram.filters import Command, CommandObject
-from aiogram.types import (
-    Message,
-    CallbackQuery,
-    InlineKeyboardMarkup,
-    InlineKeyboardButton,
-)
+from aiogram.types import Message
 from sqlalchemy import select
 
 from app.config import TELEGRAM_BOT_TOKEN, TELEGRAM_BOT_USERNAME
@@ -22,28 +17,6 @@ from app.gemini_chat import ask_gemini
 logger = logging.getLogger(__name__)
 
 dp = Dispatcher()
-
-CHANNEL_USERNAME = "@ai_yaratamiza"
-CHANNEL_URL = "https://t.me/ai_yaratamiza"
-
-
-def subscription_keyboard():
-    return InlineKeyboardMarkup(
-        inline_keyboard=[
-            [
-                InlineKeyboardButton(
-                    text="📢 Kanalga obuna bo‘lish",
-                    url=CHANNEL_URL,
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    text="✅ Obunani tekshirish",
-                    callback_data="check_subscription",
-                )
-            ],
-        ]
-    )
 
 
 def welcome_text():
@@ -71,88 +44,13 @@ def welcome_text():
     )
 
 
-async def is_subscribed(bot: Bot, telegram_id: int) -> bool:
-    try:
-        member = await bot.get_chat_member(
-            chat_id=CHANNEL_USERNAME,
-            user_id=telegram_id,
-        )
-
-        if member.status in ("creator", "administrator", "member"):
-            return True
-
-        if member.status == "restricted":
-            return bool(member.is_member)
-
-        return False
-
-    except Exception:
-        logger.exception(
-            "Kanal obunasini tekshirishda xatolik: telegram_id=%s",
-            telegram_id,
-        )
-        return False
-
-
-async def require_subscription(message: Message) -> bool:
-    if not message.from_user:
-        return False
-
-    if await is_subscribed(message.bot, message.from_user.id):
-        return True
-
-    await message.answer(
-        "🔒 Botdan foydalanish uchun avval kanalimizga obuna bo‘ling.\n\n"
-        "1. Kanalga obuna bo‘ling.\n"
-        "2. «Obunani tekshirish» tugmasini bosing.",
-        reply_markup=subscription_keyboard(),
-    )
-    return False
-
-
-@dp.callback_query(F.data == "check_subscription")
-async def check_subscription_handler(callback: CallbackQuery):
-    if not callback.from_user or not callback.message:
-        await callback.answer()
-        return
-
-    subscribed = await is_subscribed(
-        callback.bot,
-        callback.from_user.id,
-    )
-
-    if not subscribed:
-        await callback.answer(
-            "Avval @ai_yaratamiza kanaliga obuna bo‘ling.",
-            show_alert=True,
-        )
-        return
-
-    await callback.answer("Obuna tasdiqlandi!")
-
-    try:
-        await callback.message.edit_text(
-            "✅ Obuna tasdiqlandi!\n\n"
-            "Endi MAKTAB AI CONTROL botidan foydalanishingiz mumkin.\n\n"
-            "Boshlash uchun /start buyrug‘ini yuboring."
-        )
-    except Exception:
-        logger.exception("Obuna tasdiqlangan xabarni yangilashda xatolik")
-
-
 @dp.message(Command("start"))
 async def start_handler(message: Message):
-    if not await require_subscription(message):
-        return
-
     await message.answer(welcome_text())
 
 
 @dp.message(Command("help"))
 async def help_handler(message: Message):
-    if not await require_subscription(message):
-        return
-
     await message.answer(
         "📘 YORDAM\n\n"
         "1. TUMAN AI CONTROL saytiga kiring.\n"
@@ -167,9 +65,6 @@ async def help_handler(message: Message):
 
 @dp.message(Command("link"))
 async def link_handler(message: Message, command: CommandObject):
-    if not await require_subscription(message):
-        return
-
     if not message.from_user:
         await message.answer(
             "Telegram foydalanuvchisini aniqlab bo‘lmadi."
@@ -232,9 +127,6 @@ async def link_handler(message: Message, command: CommandObject):
 
 @dp.message(Command("hisobotlar"))
 async def reports_handler(message: Message):
-    if not await require_subscription(message):
-        return
-
     if not message.from_user:
         return
 
@@ -327,7 +219,6 @@ async def group_ai_handler(message: Message):
 
     bot_username = (TELEGRAM_BOT_USERNAME or "").lstrip("@")
 
-    # Bot username'sini xabar matnidan aniqlash.
     mentioned = bool(
         bot_username
         and re.search(
@@ -337,7 +228,6 @@ async def group_ai_handler(message: Message):
         )
     )
 
-    # Telegramda botning xabariga javob berilganmi?
     replied_to_bot = bool(
         message.reply_to_message
         and message.reply_to_message.from_user
@@ -357,7 +247,6 @@ async def group_ai_handler(message: Message):
             flags=re.IGNORECASE,
         ).strip()
 
-    # Botning oldingi xabarini kontekst sifatida qo‘shamiz.
     if replied_to_bot and message.reply_to_message:
         original_text = (
             message.reply_to_message.text
