@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+<title id="title">MAKTAB AI CONTROL</title>
+<defs>
+  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0b8"/><stop offset=".52" stop-color="#e9c46a"/><stop offset="1" stop-color="#b8872d"/></linearGradient>
+  <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#70e1ff"/><stop offset="1" stop-color="#168ac5"/></linearGradient>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1c2d46"/><stop offset="1" stop-color="#080d18"/></linearGradient>
+</defs>
+<path d="M64 5 112 23v35c0 31-19 52-48 65C35 110 16 89 16 58V23L64 5Z" fill="url(#bg)" stroke="url(#gold)" stroke-width="4"/>
+<path d="M37 82V43h10l17 22 17-22h10v39H80V61L64 81 48 61v21H37Z" fill="url(#gold)"/>
+<circle cx="98" cy="34" r="5" fill="url(#blue)"/><circle cx="30" cy="93" r="4" fill="url(#blue)"/>
+<path d="M94 39 84 49M34 89l9-8" stroke="url(#blue)" stroke-width="2.5" stroke-linecap="round"/>
+</svg>
