@@ -1,12 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
-<title id="title">MAKTAB AI CONTROL</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-labelledby="title desc">
+<title id="title">MAKTAB AI CONTROL</title><desc id="desc">Ko‘k va oltin rangli maktab, bitiruv qalpog‘i, sun’iy intellekt chipi va ochiq kitob tasvirlangan emblema.</desc>
 <defs>
-  <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0b8"/><stop offset=".52" stop-color="#e9c46a"/><stop offset="1" stop-color="#b8872d"/></linearGradient>
-  <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#70e1ff"/><stop offset="1" stop-color="#168ac5"/></linearGradient>
-  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1c2d46"/><stop offset="1" stop-color="#080d18"/></linearGradient>
+ <radialGradient id="bg"><stop stop-color="#101d35"/><stop offset="1" stop-color="#02050c"/></radialGradient>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff2bd"/><stop offset=".45" stop-color="#f4bd48"/><stop offset="1" stop-color="#9b6416"/></linearGradient>
+ <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9beaff"/><stop offset=".45" stop-color="#168bff"/><stop offset="1" stop-color="#0047b9"/></linearGradient>
+ <filter id="glowB"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="glowG"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
 </defs>
-<path d="M64 5 112 23v35c0 31-19 52-48 65C35 110 16 89 16 58V23L64 5Z" fill="url(#bg)" stroke="url(#gold)" stroke-width="4"/>
-<path d="M37 82V43h10l17 22 17-22h10v39H80V61L64 81 48 61v21H37Z" fill="url(#gold)"/>
-<circle cx="98" cy="34" r="5" fill="url(#blue)"/><circle cx="30" cy="93" r="4" fill="url(#blue)"/>
-<path d="M94 39 84 49M34 89l9-8" stroke="url(#blue)" stroke-width="2.5" stroke-linecap="round"/>
+<circle cx="320" cy="320" r="292" fill="url(#bg)" stroke="url(#blue)" stroke-width="9" filter="url(#glowB)"/>
+<circle cx="320" cy="320" r="274" fill="none" stroke="url(#gold)" stroke-width="5"/>
+<path d="M320 65 475 130 320 196 165 130Z" fill="#071326" stroke="url(#gold)" stroke-width="7"/>
+<path d="M435 147v55" stroke="url(#gold)" stroke-width="7"/><circle cx="435" cy="207" r="8" fill="url(#gold)"/>
+<path d="M425 220q10-12 20 0l9 68h-38Z" fill="url(#gold)" stroke="#ffdb78" stroke-width="2"/>
+<g fill="#071a32" stroke="url(#blue)" stroke-width="5">
+ <path d="M105 235h105v145H105z"/><path d="M430 235h105v145H430z"/>
+ <path d="M122 255h25v36h-25zm48 0h25v36h-25zm-48 55h25v48h-25zm48 0h25v48h-25z"/>
+ <path d="M447 255h25v36h-25zm48 0h25v36h-25zm-48 55h25v48h-25zm48 0h25v48h-25z"/>
+</g>
+<g stroke="url(#blue)" stroke-width="5" fill="none" filter="url(#glowB)">
+ <path d="M320 195v46m-38-30 18 18v15m58-33-18 18v15M230 270h65m-65 0-18-18m198 18h-65m65 0 18-18M220 310h75m125 0h-75M260 350h35m120 0h-35"/>
+ <path d="M320 388v-30m-25 30v-20m50 20v-20"/>
+</g>
+<rect x="276" y="242" width="88" height="88" rx="14" fill="#06142b" stroke="url(#blue)" stroke-width="7" filter="url(#glowB)"/>
+<text x="320" y="303" text-anchor="middle" font-family="Arial,sans-serif" font-size="46" font-weight="900" fill="#fff" stroke="#168bff" stroke-width="1">AI</text>
+<path d="M320 405 178 360 112 432 270 410q35 0 50 25 15-25 50-25l158 22-66-72Z" fill="url(#gold)" stroke="#ffdc7c" stroke-width="5"/>
+<path d="M320 428q-36-41-86-41l-95 24 112 8q42 2 69 35 27-33 69-35l112-8-95-24q-50 0-86 41Z" fill="#061329" stroke="url(#blue)" stroke-width="5"/>
+<path d="M320 447q-34-45-88-46l-67 7 113 52q24 13 42 35 18-22 42-35l113-52-67-7q-54 1-88 46Z" fill="url(#gold)" stroke="#ffe39a" stroke-width="4"/>
+<text x="320" y="525" text-anchor="middle" font-family="Arial,sans-serif" font-size="48" font-weight="900" letter-spacing="4" fill="#f4f6fb">MAKTAB</text>
+<text x="320" y="574" text-anchor="middle" font-family="Arial,sans-serif" font-size="39" font-weight="900" letter-spacing="2" fill="url(#gold)">AI CONTROL</text>
+<path d="M128 592h384" stroke="url(#gold)" stroke-width="3"/>
 </svg>
