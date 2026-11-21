@@ -2,6 +2,10 @@ import re
 
 # O'zbekcha matnlar uchun loyiha bo'ylab yagona milliy yozuv.
 _ROOTS = (
+    "o'","bo'","so'","to'","yo'","ko'","qo'","do'","mo'","g'",
+    "yaxsh","yasha","ishla","ishonch","qish","kich","uch","kech",
+    "mashq","mashina","tashkil","tashqi","boshqa","shart","shaxs",
+    "shunday","shunch","ko'pchilik",
     "tosh", "farg", "qumqo", "samarqand", "buxoro", "nukus", "termiz", "surxon", "andij", "namang", "jizz", "qarshi", "urganch",
     "o'zbek", "o'zbekiston", "shahar", "shamol", "sharoit", "shakl", "shuning",
     "tanla", "havo", "sifat", "ob-havo", "asos", "model", "baho", "ko'r",
