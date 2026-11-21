@@ -59,7 +59,7 @@ async def ask_gemini(prompt: str) -> str:
     if not prompt or not prompt.strip():
         return "Savolingni yoz, jgar 🙂"
 
-    prompt = prompt.strip() + "\\n\\nO‘ZBEKCHA YOZUV TALABI: o‘zbekcha javoblarni faqat milliy yozuvda yoz: o→ö, g‘→ğ, sh→ş, ch→ç. Inglizcha va ruscha matnni o‘zgartirma."
+    prompt = prompt.strip() + "\n\nO‘ZBEKCHA YOZUV TALABI: o‘zbekcha javoblarni faqat milliy yozuvda yoz: o→ö, g‘→ğ, sh→ş, ch→ç. Inglizcha va ruscha matnni o‘zgartirma."
     errors = []
 
     # 1. GROQ — asosiy va tezkor AI
