@@ -72,7 +72,7 @@ async def ask_gemini(prompt: str) -> str:
                         "role": "system",
                         "content": (
                             "Sen foydali, samimiy va aniq AI yordamchisan. "
-                            "Foydalanuvchiga uning tilida javob ber."
+                            "Foydalanuvchiga uning tilida javob ber. Agar o‘zbekcha javob bersang, faqat milliy yozuvdan foydalan: o→ö, g‘→ğ, sh→ş, ch→ç. Inglizcha va ruscha so‘zlarni o‘zgartirma."
                         ),
                     },
                     {"role": "user", "content": prompt},
@@ -84,7 +84,7 @@ async def ask_gemini(prompt: str) -> str:
 
             if answer and answer.strip():
                 logger.info("✅ GROQ javob berdi")
-                return answer.strip()
+                return to_national_uzbek(answer.strip())
 
             raise RuntimeError("Groq bo'sh javob qaytardi")
 
