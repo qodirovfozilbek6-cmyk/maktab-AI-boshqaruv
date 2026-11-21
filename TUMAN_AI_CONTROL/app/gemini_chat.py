@@ -7,6 +7,8 @@ from dotenv import load_dotenv
 from openai import AsyncOpenAI
 from google import genai
 
+from app.orthography import to_national_uzbek
+
 load_dotenv()
 
 logging.basicConfig(
