@@ -58,7 +58,7 @@ def to_national_uzbek(value: str) -> str:
     """Convert recognized Uzbek words while leaving other languages untouched."""
     if not isinstance(value, str) or not value:
         return value
-    return re.sub(r"[A-Za-zА-Яа-яЁёЎўҚқҒғҲҳʻʼ’‘'\u2018\u2019\u02BB\u02BC`-]+", _convert_word, value)
+    return re.sub(r"[A-Za-zА-Яа-яЁёЎўҚқҒғҲҳʻʼ’‘'\u2018\u2019\u02BB\u02BC`-]+", lambda match: _convert_word(match.group(0)), value)
 def to_national_data(value):
     """Recursively normalize user-facing text in API payloads."""
     if isinstance(value, str):
