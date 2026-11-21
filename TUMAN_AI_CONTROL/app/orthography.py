@@ -54,3 +54,14 @@ def to_national_uzbek(value: str) -> str:
     if not isinstance(value, str) or not value:
         return value
     return re.sub(r"[A-Za-zА-Яа-яЁёЎўҚқҒғҲҳʻʼ’‘'\u2018\u2019\u02BB\u02BC`-]+", _convert_word, value)
+def to_national_data(value):
+    """Recursively normalize user-facing text in API payloads."""
+    if isinstance(value, str):
+        return to_national_uzbek(value)
+    if isinstance(value, list):
+        return [to_national_data(item) for item in value]
+    if isinstance(value, tuple):
+        return tuple(to_national_data(item) for item in value)
+    if isinstance(value, dict):
+        return {key: to_national_data(item) for key, item in value.items()}
+    return value
