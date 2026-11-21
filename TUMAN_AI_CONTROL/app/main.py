@@ -77,6 +77,7 @@ from app.permissions import (
 from app.directions import ensure_schema, seed_directions
 from app.database import SessionLocal
 from app.ai_analysis import analyze_report
+from app.orthography import to_national_data
 from app.ai_center import build_overview, build_period_report
 from app.ratelimit import LoginLimiter
 from fastapi.responses import FileResponse
@@ -1161,10 +1162,10 @@ def ai_analyze(
 ):
     # Hozircha lokal, qoidaga asoslangan tahlil.
     # Tashqi AI API kaliti ulanmaguncha internetga ma'lumot yuborilmaydi.
-    return analyze_report(
+    return to_national_data(analyze_report(
         text=payload.text,
         context=payload.context,
-    )
+    ))
 
 
 def load_ai_overview(db: Session, user: User, window_days: int) -> dict:
@@ -1242,7 +1243,7 @@ def ai_overview(
     user=Depends(get_current_user),
 ):
     """Yo'nalishlar bo'yicha statistik tahlil (API kalit talab qilmaydi)."""
-    return load_ai_overview(db, user, window_days)
+    return to_national_data(load_ai_overview(db, user, window_days))
 
 
 @app.get("/ai/report")
@@ -1258,4 +1259,4 @@ def ai_period_report(
     audit(db, user, "generate", "ai_report", None, f"period={period}")
     commit_or_rollback(db)
 
-    return build_period_report(overview, period)
+    return to_national_data(build_period_report(overview, period))
