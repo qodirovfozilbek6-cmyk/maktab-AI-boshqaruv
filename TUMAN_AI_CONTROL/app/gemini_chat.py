@@ -112,7 +112,7 @@ async def ask_gemini(prompt: str) -> str:
 
             if answer and answer.strip():
                 logger.info("✅ GEMINI javob berdi")
-                return answer.strip()
+                return to_national_uzbek(answer.strip())
 
             raise RuntimeError("Gemini bo'sh javob qaytardi")
 
@@ -152,7 +152,7 @@ async def ask_gemini(prompt: str) -> str:
                     "✅ OPENROUTER javob berdi. Model: %s",
                     response.model,
                 )
-                return answer.strip()
+                return to_national_uzbek(answer.strip())
 
             raise RuntimeError("OpenRouter bo'sh javob qaytardi")
 
